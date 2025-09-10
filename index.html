@@ -1,266 +1,97 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KING ADMIN - Codes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>لوحة شحن تجريبية</title>
   <style>
     body {
-      background:#000;
-      color:#0f0;
-      font-family:Arial, sans-serif;
-      margin:0;
-      padding:20px;
-      text-align:center;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      text-align: center;
     }
-    h2 { margin-bottom:10px; }
-    input, button { padding:8px; margin:5px; border-radius:8px; border:none; }
-    input { width:120px; text-align:center; }
-    button { background:#0f0; color:#000; cursor:pointer; font-weight:bold; }
-    button:hover { background:#3f3; }
-    table { border-collapse:collapse; width:100%; margin-top:15px; }
-    th, td { border:1px solid #0f0; padding:6px; text-align:center; }
-    #visitsBox { margin-bottom:15px; font-size:16px; }
-
-    /* شاشة تسجيل الدخول */
-    #loginScreen {
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,0.85);
-      z-index:9999;
+    .header {
+      background: #2eae57;
+      color: #fff;
+      padding: 20px;
     }
-    .loginCard {
-      background:#050505;
-      border:2px solid #0f0;
-      padding:22px;
-      width:320px;
-      border-radius:12px;
+    .header h1 {
+      margin: 0;
+      font-size: 26px;
     }
-    .loginCard h3 { margin-top:0; margin-bottom:12px; color:#0f0; }
-    .loginInput { width:100%; padding:10px; border-radius:8px; border:1px solid #0f0; background:transparent; color:#0f0; }
-    .errorMsg { color:#ff4444; margin-top:8px; display:none; font-weight:bold; }
-
-    .tgBtn {
-      display:inline-block;
-      margin-top:10px;
-      padding:8px 12px;
-      border-radius:8px;
-      background:#0f0;
-      color:#000;
-      text-decoration:none;
-      font-weight:bold;
+    .header p {
+      margin: 5px 0 0;
+      font-size: 18px;
+      font-weight: bold;
     }
-    .tgBtn:hover { background:#3f3; }
-
-    #mainApp { display:none; }
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      text-align: right;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      background: #2eae57;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      margin: 15px 0;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .msg {
+      color: #2eae57;
+      font-size: 16px;
+      display: none;
+    }
   </style>
 </head>
 <body>
-
-<!-- شاشة تسجيل الدخول -->
-<div id="loginScreen">
-  <div class="loginCard">
-    <h3>تسجيل الدخول</h3>
-    <p>أدخل كود التفعيل لتستمر</p>
-    <input id="accessCode" class="loginInput" placeholder="أدخل الكود هنا"/>
-    <div>
-      <button id="loginBtn">دخول</button>
-    </div>
-    <div id="error" class="errorMsg">كود خطأ، تواصل مع المطور</div>
-    <div style="margin-top:10px;">
-      <a class="tgBtn" href="https://t.me/nbvvte" target="_blank">@nbvvte</a>
-    </div>
-  </div>
-</div>
-
-<!-- المحتوى الرئيسي -->
-<div id="mainApp">
-  <h2>مرحبًا بودي مغربي</h2>
-  <div id="visitsBox">
-    عدد زياراتك المتبقية اليوم: <span id="visitsLeft">0</span>
+  <div class="header">
+    <h1>مرحباً</h1>
+    <p>Sony_1xbet[11-9]@</p>
   </div>
 
-  <label>عدد الأكواد:</label>
-  <input type="number" id="numCodes" value="5" min="1" max="100"><br>
-  <label>عدد الاستخدامات لكل كود:</label>
-  <input type="number" id="uses" value="1" min="1"><br>
-  <button id="genBtn">توليد</button>
-  <button id="clearBtn">مسح الكل</button>
+  <div class="container">
+    <label>اسم المستخدم:</label>
+    <input type="text" id="username" value="1381999371">
 
-  <h3>الأكواد المتاحة</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>الكود</th>
-        <th>الاستخدامات المتبقية</th>
-      </tr>
-    </thead>
-    <tbody id="codesTable"></tbody>
-  </table>
-</div>
+    <button class="btn" onclick="searchUser()">بحث</button>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+    <label>الرصيد:</label>
+    <input type="number" id="balance" value="1500">
 
-  const CORRECT_CODE = "777xogka-8815-447f-8bfd-s1da313a2a70";
+    <label>حظر عند:</label>
+    <input type="number" id="limit" value="80000">
 
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAF1K59iKFsVH-wyAKyGw2wsIMUIrT9WMg",
-    authDomain: "admin-3fd30.firebaseapp.com",
-    databaseURL: "https://admin-3fd30-default-rtdb.firebaseio.com",
-    projectId: "admin-3fd30",
-    storageBucket: "admin-3fd30.firebasestorage.app",
-    messagingSenderId: "981773176798",
-    appId: "1:981773176798:web:1ebc106e60af04ed8a174f",
-    measurementId: "G-35L6036ED8"
-  };
+    <button class="btn" onclick="updateBalance()">تحديث الرصيد</button>
 
-  const DAILY_VISITS = 100;
-  const RESET_HOUR = 7; // 7 صباحاً
+    <p class="msg" id="successMsg">Balance updated successfully.</p>
+  </div>
 
-  let app, db;
-
-  // === توقيت مصر UTC+2 ===
-  function getEgyptTime(date = new Date()){
-    return new Date(date.getTime() + (2 * 60 * 60 * 1000));
-  }
-  function getToday7Egypt(){
-    const nowEgypt = getEgyptTime();
-    return new Date(
-      nowEgypt.getFullYear(),
-      nowEgypt.getMonth(),
-      nowEgypt.getDate(),
-      RESET_HOUR,0,0,0
-    ).getTime() - (2*60*60*1000); // نرجع للـ UTC
-  }
-
-  // شاشة الدخول
-  const loginScreen = document.getElementById("loginScreen");
-  const mainApp = document.getElementById("mainApp");
-  const errorDiv = document.getElementById("error");
-  document.getElementById("loginBtn").addEventListener("click", ()=>{
-    const val = document.getElementById("accessCode").value.trim();
-    if(val === CORRECT_CODE){
-      loginScreen.style.display = "none";
-      mainApp.style.display = "block";
-      initFirebaseAndApp();
-    } else {
-      errorDiv.style.display = "block";
+  <script>
+    function searchUser(){
+      alert("تم البحث عن المستخدم: " + document.getElementById('username').value);
     }
-  });
-
-  function initFirebaseAndApp(){
-    app = initializeApp(firebaseConfig);
-    db = getDatabase(app);
-    document.getElementById("genBtn").addEventListener("click", generateCodes);
-    document.getElementById("clearBtn").addEventListener("click", clearAll);
-    initVisits();
-    renderTable();
-  }
-
-  async function initVisits(){
-    const snap = await get(ref(db, "visits"));
-    const now = new Date();
-    const today7 = getToday7Egypt();
-
-    let visitsLeft = DAILY_VISITS;
-    let lastReset = today7;
-    let usedToday = false;
-
-    if(snap.exists()){
-      const data = snap.val();
-      visitsLeft = data.visitsLeft ?? DAILY_VISITS;
-      lastReset = data.lastReset || today7;
-      usedToday = data.usedToday || false;
-
-      if(now.getTime() >= today7 && today7 > lastReset && usedToday){
-        visitsLeft = DAILY_VISITS;
-        lastReset = today7;
-        usedToday = false;
-        await set(ref(db, "visits"), { visitsLeft, lastReset, usedToday });
-      }
-    } else {
-      await set(ref(db, "visits"), { visitsLeft, lastReset, usedToday });
+    function updateBalance(){
+      document.getElementById('successMsg').style.display = 'block';
     }
-    document.getElementById("visitsLeft").innerText = visitsLeft;
-  }
-
-  async function useVisits(count){
-    const snap = await get(ref(db, "visits"));
-    if(!snap.exists()) return false;
-    let { visitsLeft, lastReset, usedToday } = snap.val();
-    const now = new Date();
-    const today7 = getToday7Egypt();
-
-    if(now.getTime() >= today7 && today7 > lastReset && usedToday){
-      visitsLeft = DAILY_VISITS;
-      lastReset = today7;
-      usedToday = false;
-    }
-    if(visitsLeft >= count){
-      visitsLeft -= count;
-      usedToday = true;
-      await set(ref(db, "visits"), { visitsLeft, lastReset, usedToday });
-      document.getElementById("visitsLeft").innerText = visitsLeft;
-      return true;
-    } else {
-      alert("❌ انتهت زياراتك، انتظر الساعة 7 صباحًا بتوقيت مصر للتجديد");
-      return false;
-    }
-  }
-
-  function randomHexCode(){
-    const HEX = "0123456789ABCDEF";
-    const parts = [];
-    for(let g=0; g<4; g++){
-      let seg = "";
-      for(let i=0; i<5; i++) seg += HEX[Math.floor(Math.random()*HEX.length)];
-      parts.push(seg);
-    }
-    return parts.join("-");
-  }
-
-  async function generateCodes(){
-    const num = parseInt(document.getElementById("numCodes").value);
-    const uses = parseInt(document.getElementById("uses").value);
-    if(!await useVisits(num)) return;
-    const snap = await get(ref(db, "codes"));
-    const existing = new Set(snap.exists() ? Object.keys(snap.val()) : []);
-    const newCodes = [];
-    while(newCodes.length < num){
-      const code = randomHexCode();
-      if(!existing.has(code)){
-        existing.add(code);
-        newCodes.push(code);
-      }
-    }
-    await Promise.all(newCodes.map(c => set(ref(db, "codes/" + c), { remaining: uses })));
-    renderTable();
-  }
-
-  async function renderTable(){
-    const snapshot = await get(ref(db, "codes"));
-    const tbody = document.getElementById("codesTable");
-    tbody.innerHTML = "";
-    if(snapshot.exists()){
-      const data = snapshot.val();
-      Object.keys(data).sort().forEach(code=>{
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${code}</td><td>${data[code].remaining}</td>`;
-        tbody.appendChild(tr);
-      });
-    }
-  }
-
-  async function clearAll(){
-    await remove(ref(db, "codes"));
-    renderTable();
-  }
-</script>
+  </script>
 </body>
 </html>
